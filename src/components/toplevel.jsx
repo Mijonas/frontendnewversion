@@ -2,10 +2,14 @@ import React, { Component } from "react";
 import SearchArea from "./searcharea";
 import PaperDisplay from "./paperdisplay";
 import { v4 as uuidv4 } from "uuid";
+import { Navbar } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 class TopLevel extends Component {
   state = {
     paper: [],
+    favoritepaper: [],
+    favoritechange: false,
     size: "5",
     sort: "relevance",
     server: "medrxiv",
@@ -46,9 +50,24 @@ class TopLevel extends Component {
 
   render() {
     return (
-      <div>
+      <div style={{ justifyContent: "center" }}>
+        <Navbar bg="light" variant="light">
+          <Container>
+            <Navbar.Brand href="#home">
+              <img
+                style={{ marginRight: 10 }}
+                alt=""
+                src="/logo.jpeg"
+                width="30"
+                height="30"
+                className="d-inline-block align-top"
+              />
+              React Bootstrap
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
+
         <SearchArea
-          onCsvDownload={this.handleCsvDownload}
           onServerChange={(server) => this.handleServerChange(server)}
           sum={this.state.sum}
           onDropdownChange={(indexinsum, index, value) =>
@@ -70,13 +89,46 @@ class TopLevel extends Component {
         />
 
         <PaperDisplay
-          paper={this.state.paper}
+          onShowFavorites={this.handleShowFavorites}
+          onMarkChange={(id) => this.handleMarkChange(id)}
+          onCsvDownload={this.handleCsvDownload}
+          paper={
+            this.state.favoritechange === false
+              ? this.state.paper
+              : this.state.favoritepaper
+          }
           onScrollUp={this.handleScrollUp}
           onSortChange={(sortmode) => this.handleSortChange(sortmode)}
+          onSizeChange={(size) => this.handleSizeChange(size)}
         />
       </div>
     );
   }
+
+  handleShowFavorites = () => {
+    let favchange = !this.state.favoritechange;
+
+    this.setState({ favoritechange: favchange });
+  };
+
+  handleMarkChange = (id) => {
+    const papercopy = [...this.state.paper];
+    let favoritepaper = [...this.state.favoritepaper];
+    const paper = papercopy.filter((paper) => paper.id === id);
+    const checkfavorite = favoritepaper.filter((paper) => paper.id === id);
+
+    if (checkfavorite.length === 1) {
+      let newfavoritepaper = favoritepaper.filter((paper) => paper.id !== id);
+      this.setState({ favoritepaper: newfavoritepaper });
+
+      return;
+    }
+
+    if (paper !== null) {
+      const newfavoritepaper = favoritepaper.concat(paper);
+      this.setState({ favoritepaper: newfavoritepaper });
+    }
+  };
 
   handleCsvDownload = () => {
     window.open("http://localhost:8080/query/csv");
@@ -88,6 +140,11 @@ class TopLevel extends Component {
     });
   };
 
+  handleSizeChange = (newsize) => {
+    this.setState({ size: newsize }, function () {
+      this.handleStartButton();
+    });
+  };
   handleScrollUp = () => {
     window.scroll({
       top: document.body.offsetTop,
@@ -168,12 +225,6 @@ class TopLevel extends Component {
     fetch("http://localhost:8080/query/api", requestOptions)
       .then((response) => response.json())
       .then((paper) => this.setState({ paper }));
-
-    window.scroll({
-      top: document.body.offsetHeight,
-      left: 0,
-      behavior: "smooth",
-    });
   };
 
   //for Field

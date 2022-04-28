@@ -3,6 +3,8 @@ import SearchTermList from "./searchtermlist";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/esm/Form";
 import Row from "react-bootstrap/esm/Row";
+import { Card } from "react-bootstrap";
+import { Container, Col } from "react-bootstrap";
 
 class SearchArea extends Component {
   /**
@@ -19,13 +21,33 @@ class SearchArea extends Component {
         style={{
           flex: 1,
           flexDirection: "row",
-          marginTop: 8,
+          marginTop: 20,
           minHeight: 500,
         }}
       >
-        <div className="header" style={{ fontSize: 30, textAlign: "center" }}>
-          Welcome to the Preprint-Paperscraper
-        </div>
+        <Card style={{ marginTop: 20, marginBottom: 20, borderRadius: 12 }}>
+          <Container>
+            <Row>
+              <Col sm={10}>
+                <Card.Title style={{ margin: 20 }}>
+                  Welcome to megaLIT!
+                </Card.Title>
+                <Card.Text style={{ margin: 20 }}>
+                  Find the right preprints for your project!!
+                </Card.Text>
+              </Col>
+              <Col sm={2}>
+                <img
+                  alt=""
+                  src="/logo.jpeg"
+                  width="100"
+                  height="100"
+                  className="d-inline-block align-top"
+                />
+              </Col>
+            </Row>
+          </Container>
+        </Card>
 
         <SearchTermList
           onAddSearchTermButton={(index) =>
@@ -47,7 +69,13 @@ class SearchArea extends Component {
         />
 
         <div style={{ textAlign: "right" }}>
-          <Button onClick={this.props.onOrConnect}>Add "OR" connection</Button>
+          <Button
+            variant="secondary"
+            style={{ width: 80, borderRadius: 25 }}
+            onClick={this.props.onOrConnect}
+          >
+            + OR
+          </Button>
         </div>
         <Row>
           <div>Select servers which should be included</div>
@@ -114,10 +142,12 @@ class SearchArea extends Component {
           </Form>
         </Row>
         <div style={{ textAlign: "center" }}>
-          <Button onClick={this.props.onStartButton}>Start Search</Button>
-        </div>
-        <div style={{ textAlign: "center" }}>
-          <Button onClick={this.props.onCsvDownload}>Download csv</Button>
+          <Button
+            style={{ borderRadius: 25 }}
+            onClick={this.props.onStartButton}
+          >
+            Start Search
+          </Button>
         </div>
       </div>
     );

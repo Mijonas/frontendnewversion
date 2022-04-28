@@ -5,6 +5,9 @@ import Col from "react-bootstrap/esm/Col";
 import Button from "react-bootstrap/esm/Button";
 import FormCheck from "react-bootstrap/esm/FormCheck";
 import Form from "react-bootstrap/esm/Form";
+import { Card, Container } from "react-bootstrap";
+import { CloseButton } from "react-bootstrap";
+import { Badge } from "react-bootstrap";
 
 /**
  * Class is used to represent the list of search terms and is embedded in the container
@@ -25,7 +28,17 @@ class SearchTermList extends Component {
                     fontWeight: "bold",
                   }}
                 >
-                  OR
+                  <h3>
+                    <Badge
+                      bg="secondary"
+                      style={{
+                        fontSize: 19,
+                        fontWeight: 400,
+                      }}
+                    >
+                      OR
+                    </Badge>
+                  </h3>
                 </div>
               )}
             </div>
@@ -35,118 +48,137 @@ class SearchTermList extends Component {
               //conditional variant of button
 
               return (
-                <Row key={list.id}>
+                <Card
+                  key={index}
+                  style={{
+                    marginTop: 10,
+                    borderRadius: 12,
+                    backgroundColor: "#DDE2FA",
+                  }}
+                >
                   <div
                     style={{
                       display: "flex",
                       margin: 20,
                     }}
                   >
-                    <Col md="auto">
-                      <SearchTermField
-                        id={list.id}
-                        onDelete={() => {
-                          this.props.onDelete(indexinsum, index);
-                        }}
-                        onTermChange={(value) =>
-                          this.props.onTermChange(indexinsum, index, value)
-                        }
-                      />
-                    </Col>
-                    <Col className="Negation">
-                      <FormCheck
-                        type="switch"
-                        id="custom-switch"
-                        label="Negate search term"
-                        onChange={() =>
-                          this.props.onNegation(indexinsum, index)
-                        }
-                      />
-                    </Col>
-                    <Col>
-                      <div style={{ border: "1px solid rgba(0, 0, 0, 0.8)" }}>
-                        Select fields to search in
-                      </div>
-                      <Form label="Select fields to search in">
-                        {["checkbox"].map((type) => (
-                          <div key={`inline-${type}`} className="mb-3">
-                            <Form.Check
-                              inline
-                              defaultChecked
-                              onChange={() =>
-                                this.props.onDropdownChange(
-                                  indexinsum,
-                                  index,
-                                  "title"
-                                )
-                              }
-                              label="title"
-                              name="group1"
-                              type={type}
-                              id={`inline-${type}-1`}
-                            />
-                            <Form.Check
-                              inline
-                              label="abstract"
-                              onChange={() =>
-                                this.props.onDropdownChange(
-                                  indexinsum,
-                                  index,
-                                  "abstract"
-                                )
-                              }
-                              name="group1"
-                              type={type}
-                              id={`inline-${type}-2`}
-                            />
-                            <Form.Check
-                              inline
-                              label="category"
-                              onChange={() =>
-                                this.props.onDropdownChange(
-                                  indexinsum,
-                                  index,
-                                  "category"
-                                )
-                              }
-                              name="group1"
-                              type={type}
-                              id={`inline-${type}-3`}
-                            />
-                            <Form.Check
-                              inline
-                              label="author"
-                              onChange={() =>
-                                this.props.onDropdownChange(
-                                  indexinsum,
-                                  index,
-                                  "author"
-                                )
-                              }
-                              name="group1"
-                              type={type}
-                              id={`inline-${type}-3`}
-                            />
-                            <Form.Check
-                              inline
-                              label="doi"
-                              onChange={() =>
-                                this.props.onDropdownChange(
-                                  indexinsum,
-                                  index,
-                                  "doi"
-                                )
-                              }
-                              name="group1"
-                              type={type}
-                              id={`inline-${type}-3`}
-                            />
-                          </div>
-                        ))}
-                      </Form>
-                    </Col>
+                    <Container>
+                      <Row key={list.id}>
+                        <Col xs={11}>
+                          <SearchTermField
+                            id={list.id}
+                            onTermChange={(value) =>
+                              this.props.onTermChange(indexinsum, index, value)
+                            }
+                          />
+                        </Col>
+
+                        <Col>
+                          <CloseButton
+                            style={{ marginLeft: 40, marginTop: 8 }}
+                            onClick={() => {
+                              this.props.onDelete(indexinsum, index);
+                            }}
+                          ></CloseButton>
+                        </Col>
+                      </Row>
+
+                      <Row style={{ marginTop: 20 }}>
+                        <Col className="Negation">
+                          <FormCheck
+                            style={{ marginTop: 24 }}
+                            type="switch"
+                            id="custom-switch"
+                            label="Negate search term"
+                            onChange={() =>
+                              this.props.onNegation(indexinsum, index)
+                            }
+                          />
+                        </Col>
+                        <Col>
+                          <div>Search in</div>
+                          <Form label="Select fields to search in">
+                            {["checkbox"].map((type) => (
+                              <div key={`inline-${type}`} className="mb-3">
+                                <Form.Check
+                                  inline
+                                  defaultChecked
+                                  onChange={() =>
+                                    this.props.onDropdownChange(
+                                      indexinsum,
+                                      index,
+                                      "title"
+                                    )
+                                  }
+                                  label="title"
+                                  name="group1"
+                                  type={type}
+                                  id={`inline-${type}-1`}
+                                />
+                                <Form.Check
+                                  inline
+                                  label="abstract"
+                                  onChange={() =>
+                                    this.props.onDropdownChange(
+                                      indexinsum,
+                                      index,
+                                      "abstract"
+                                    )
+                                  }
+                                  name="group1"
+                                  type={type}
+                                  id={`inline-${type}-2`}
+                                />
+                                <Form.Check
+                                  inline
+                                  label="category"
+                                  onChange={() =>
+                                    this.props.onDropdownChange(
+                                      indexinsum,
+                                      index,
+                                      "category"
+                                    )
+                                  }
+                                  name="group1"
+                                  type={type}
+                                  id={`inline-${type}-3`}
+                                />
+                                <Form.Check
+                                  inline
+                                  label="author"
+                                  onChange={() =>
+                                    this.props.onDropdownChange(
+                                      indexinsum,
+                                      index,
+                                      "author"
+                                    )
+                                  }
+                                  name="group1"
+                                  type={type}
+                                  id={`inline-${type}-3`}
+                                />
+                                <Form.Check
+                                  inline
+                                  label="doi"
+                                  onChange={() =>
+                                    this.props.onDropdownChange(
+                                      indexinsum,
+                                      index,
+                                      "doi"
+                                    )
+                                  }
+                                  name="group1"
+                                  type={type}
+                                  id={`inline-${type}-3`}
+                                />
+                              </div>
+                            ))}
+                          </Form>
+                        </Col>
+                      </Row>
+                    </Container>
                   </div>
-                </Row>
+                </Card>
               );
             })}
           </div>
@@ -158,11 +190,13 @@ class SearchTermList extends Component {
                 this.props.onAddSearchTermButton(indexinsum);
               }}
               style={{
+                width: 80,
                 marginBottom: 10,
                 marginTop: 20,
+                borderRadius: 25,
               }}
             >
-              Add Search Term
+              + AND
             </Button>
           </div>
         </div>
